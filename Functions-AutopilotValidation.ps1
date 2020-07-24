@@ -66,4 +66,20 @@ Function Test-AutopilotForExistingDevice {
     }        
 }
 
+Function Test-CheckForUnattendXML {
+    [cmdletbinding()]
+
+    Param (
+    )
+    
+    Process {
+        $Unattend = "c:\windows\system32\sysprep\unattend.xml","c:\windows\panther\unattend.xml"
+        foreach ($i in $Unattend){
+            if (Test-Path $i -PathType leaf){
+                Write-Host "Deleting file $i"
+                Remove-Item $i
+            }
+        }
+    }        
+}
 
