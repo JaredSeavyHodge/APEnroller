@@ -1,10 +1,4 @@
-<#
-. .\Test-WindowsEditionforAutopilot.ps1
-. .\Get-DeviceSerial.ps1
-. .\Connect-Tennant.ps1
-. .\Test-AutoPilotforExistingDevice.ps1
-#>
-. C:\Users\jared\'OneDrive - Hillsborough Community College'\OIT\Deployment\Scripts\Test-AutopilotValidation.ps1
+. .\Functions-AutopilotValidation.ps1
 
 Test-WindowsEditionforAutopilot
 $Serial = Get-DeviceSerial
