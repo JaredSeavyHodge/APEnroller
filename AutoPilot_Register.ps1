@@ -1,4 +1,5 @@
-. .\Functions-AutopilotValidation.ps1
+#. .\Functions-AutopilotValidation.ps1
+iex(iwr https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/master/Functions-AutopilotValidation.ps1)
 
 Test-WindowsEditionforAutopilot
 $Serial = Get-DeviceSerial
