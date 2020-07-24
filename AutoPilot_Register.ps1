@@ -1,4 +1,4 @@
-#. .\Functions-AutopilotValidation.ps1
+#Sourcing functions from Functions-AutopilotValidation.ps1
 iex(iwr https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/master/Functions-AutopilotValidation.ps1)
 
 Test-WindowsEditionforAutopilot                             #Will Upgrade Home/Core Edition to Education to Support Autopilot
@@ -13,6 +13,10 @@ if ($confirmation -eq 'n') {
     exit
 }
 
+#Now that validations have completed, Micahel's script will be used to enroll the
+#device into Windows Autopilot, Azure AD, and Intune MDM
+#https://www.powershellgallery.com/packages/Get-WindowsAutoPilotInfo
+#Author of Get-WindowsAutoPilotInfo:  Michael Niehaus
 Install-Script -Name Get-WindowsAutoPilotInfo -Force
 Get-WindowsAutoPilotInfo.ps1 -Online -Assign -AddToGroup ($Group.DisplayName) -reboot
 Write-Host "Rebooting?"
