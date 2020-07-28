@@ -8,8 +8,18 @@ Function Test-WindowsEditionforAutopilot {
         $Edition = Get-WindowsEdition -online
         if ($Edition.Edition -eq "Core" -OR $Edition.Edition -eq "Home"){
             Write-Warning "The Windows edition must be upgraded to support AutoPilot ... Upgrading Windows Edition"
-            changepk.exe /ProductKey NW6C2-QMPVW-D7KKK-3GKT6-VCFB2
 
+            $Proc = Start-Process changepk.exe -ArgumentList "/ProductKey NW6C2-QMPVW-D7KKK-3GKT6-VCFB2" -PassThru
+            $Proc | Wait-Process -Timeout 60 -ErrorAction SilentlyContinue -errorvariable $TimedOut
+            if ($TimedOut){
+                $Proc | Kill 
+                Write-Host "TimedOut ... Rebooting"
+                Pause
+                Shutdown /r /t 0
+			}else{Write-Host "Finished without Timeout ... Reboot"; Pause; Shutdown /r /t 0}
+
+            #changepk.exe /ProductKey NW6C2-QMPVW-D7KKK-3GKT6-VCFB2
+            <#
             if (-not($Edition.Edition -eq "Core" -OR $Edition.Edition -eq "Home")){
                 Write-Host "Ignore error associated with Edition Upgrade."
                 Write-Host "Successfully upgraded to Windows Education Edition."
@@ -18,6 +28,7 @@ Function Test-WindowsEditionforAutopilot {
                 $confirmation = Read-Host "Do you want to Generalize, Reboot, and try again? (Y/N) Default:Yes"
                 if ($confirmation -eq 'n') {exit}else{"$env:systemroot\system32\sysprep\sysprep.exe /generalize /oobe /reboot"}
             }
+            #>
         }else{Write-Host "Windows Edition: $($Edition.Edition) ... This Edition is supported by Windows AutoPilot"}
     }        
 }
