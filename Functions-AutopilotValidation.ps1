@@ -13,7 +13,7 @@ Function Test-WindowsEditionforAutopilot {
             $Proc | Wait-Process -Timeout 60 -ErrorAction SilentlyContinue -errorvariable $TimedOut
             if ($TimedOut){
                 $Proc | Kill 
-                Write-Host "TimedOut ... Rebooting"
+                Write-Host "Edition upgrade Timed Out ... Rebooting"
                 Pause
                 Shutdown /r /t 0
 			}else{Write-Host "Finished without Timeout ... Reboot"; Pause; Shutdown /r /t 0}
@@ -93,7 +93,7 @@ Function Test-CheckForUnattendXML {
                 $Sysprep = $true
             }else{Write-Host "Unattend file at $i not found"}
         }
-        if ($Sysprep){Start-Process "$env:systemroot\system32\sysprep\sysprep.exe" -ArgumentList "/generalize /oobe /reboot" -wait}
+        if ($Sysprep){Start-Process "$env:systemroot\system32\Shutdown.exe" -ArgumentList "/r /t 0"<#Start-Process "$env:systemroot\system32\sysprep\sysprep.exe" -ArgumentList "/generalize /oobe /reboot" -wait#>}
     }        
 }
 
