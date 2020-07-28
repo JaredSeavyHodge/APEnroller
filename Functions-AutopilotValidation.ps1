@@ -10,13 +10,19 @@ Function Test-WindowsEditionforAutopilot {
             Write-Warning "The Windows edition must be upgraded to support AutoPilot ... Upgrading Windows Edition"
 
             $Proc = Start-Process changepk.exe -ArgumentList "/ProductKey NW6C2-QMPVW-D7KKK-3GKT6-VCFB2" -PassThru
-            $Proc | Wait-Process -Timeout 60 -ErrorAction SilentlyContinue -errorvariable $TimedOut
+            $Proc | Wait-Process -Timeout 60 -ErrorAction SilentlyContinue #-errorvariable $TimedOut
+            $Proc | Kill
+            Write-Host "Now will reboot to complete Edition Change"
+            Shutdown /r /f /t 0
+            <#
             if ($TimedOut){
                 $Proc | Kill 
                 Write-Host "Edition upgrade Timed Out ... Rebooting"
                 Pause
                 Shutdown /r /t 0
 			}else{Write-Host "Finished without Timeout ... Reboot"; Pause; Shutdown /r /t 0}
+
+            #>
 
             #changepk.exe /ProductKey NW6C2-QMPVW-D7KKK-3GKT6-VCFB2
             <#
@@ -90,10 +96,10 @@ Function Test-CheckForUnattendXML {
             if (Test-Path $i -PathType leaf){
                 Write-Host "Deleting file $i"
                 Remove-Item $i
-                $Sysprep = $true
+                #$Sysprep = $true
             }else{Write-Host "Unattend file at $i not found"}
         }
-        if ($Sysprep){Start-Process "$env:systemroot\system32\Shutdown.exe" -ArgumentList "/r /f /t 0"<#Start-Process "$env:systemroot\system32\sysprep\sysprep.exe" -ArgumentList "/generalize /oobe /reboot" -wait#>}
+        #if ($Sysprep){Start-Process "$env:systemroot\system32\Shutdown.exe" -ArgumentList "/r /f /t 0"<#Start-Process "$env:systemroot\system32\sysprep\sysprep.exe" -ArgumentList "/generalize /oobe /reboot" -wait#>}
     }        
 }
 
