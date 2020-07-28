@@ -1,6 +1,7 @@
 #Sourcing functions from Functions-AutopilotValidation.ps1
 iex(iwr https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/master/Functions-AutopilotValidation.ps1)
 
+Test-CheckForUnattendXML                                    #Will Remove any answerfiles in the Sysprep or Panther folder
 Test-WindowsEditionforAutopilot                             #Will Upgrade Home/Core Edition to Education to Support Autopilot
 $Serial = Get-DeviceSerial                                  #Creates CimSession and Returns Device serial
 Connect-Tennant                                             #Connects to Azure and MS-Graph - Imports Dependency Modules if Necessary
