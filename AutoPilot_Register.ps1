@@ -6,6 +6,9 @@ if ($confirmation -eq 'y') {
     Test-CheckForUnattendXML                                    #Will Remove any answerfiles in the Sysprep and/or Panther folder
 }
 
+Write-Host "Press Enter to continue to Test-WindowsEditionforAutoPilot"
+Pause
+
 Test-WindowsEditionforAutopilot                             #Will Upgrade Home/Core Edition to Education to Support Autopilot
 $Serial = Get-DeviceSerial                                  #Creates CimSession and Returns Device serial
 Connect-Tennant                                             #Connects to Azure and MS-Graph - Imports Dependency Modules if Necessary
