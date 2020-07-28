@@ -82,7 +82,7 @@ Function Test-CheckForUnattendXML {
                 $Sysprep = $true
             }else{Write-Host "Unattend file at $i not found"}
         }
-        if ($Sysprep){sysprep.exe /generalize /oobe /reboot}
+        if ($Sysprep){$env:systemroot\system32\sysprep\sysprep.exe /generalize /oobe /reboot}
     }        
 }
 
