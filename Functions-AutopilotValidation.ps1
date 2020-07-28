@@ -78,7 +78,7 @@ Function Test-CheckForUnattendXML {
             if (Test-Path $i -PathType leaf){
                 Write-Host "Deleting file $i"
                 Remove-Item $i
-            }
+            }else{Write-Host "Unattend file at $i not found"}
         }
     }        
 }
