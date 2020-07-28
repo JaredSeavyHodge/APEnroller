@@ -74,12 +74,15 @@ Function Test-CheckForUnattendXML {
     
     Process {
         $Unattend = "c:\windows\system32\sysprep\unattend.xml","c:\windows\panther\unattend.xml"
+        $Sysprep = $false
         foreach ($i in $Unattend){
             if (Test-Path $i -PathType leaf){
                 Write-Host "Deleting file $i"
                 Remove-Item $i
+                $Sysprep = $true
             }else{Write-Host "Unattend file at $i not found"}
         }
+        if ($Sysprep){sysprep.exe /generalize /oobe /reboot}
     }        
 }
 
