@@ -1,3 +1,5 @@
+Start-Transcript -Path $env:TEMP\APEnroller.txt
+
 #Sourcing functions from Functions-AutopilotValidation.ps1
 Invoke-Expression(Invoke-WebRequest https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/master/Functions-AutopilotValidation.ps1 -UseBasicParsing)
 
@@ -30,3 +32,5 @@ if ($confirmation -eq 'n') {
 Install-Script -Name Get-WindowsAutoPilotInfo -Force
 Get-WindowsAutoPilotInfo.ps1 -Online -Assign -AddToGroup ($Group.DisplayName) -reboot
 Write-Host "Rebooting?"
+Pause
+Stop-Transcript
