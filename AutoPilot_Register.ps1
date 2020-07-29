@@ -1,5 +1,5 @@
 #Sourcing functions from Functions-AutopilotValidation.ps1
-iex(iwr https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/master/Functions-AutopilotValidation.ps1 -UseBasicParsing)
+Invoke-Expression(Invoke-WebRequest https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/master/Functions-AutopilotValidation.ps1 -UseBasicParsing)
 
 #$AADCredentials = Get-Credential
 
