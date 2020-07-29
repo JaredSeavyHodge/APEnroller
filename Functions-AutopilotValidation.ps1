@@ -7,35 +7,18 @@ Function Test-WindowsEditionforAutopilot {
     Process {
         $Edition = Get-WindowsEdition -online
         if ($Edition.Edition -eq "Core" -OR $Edition.Edition -eq "Home"){
-            Write-Warning "The Windows edition must be upgraded to support AutoPilot ... Upgrading Windows Edition"
+            Write-Warning "The Windows edition must be upgraded to support AutoPilot. After the upgrade, the computer will reboot and you must run this script again."
 
             $Proc = Start-Process changepk.exe -ArgumentList "/ProductKey NW6C2-QMPVW-D7KKK-3GKT6-VCFB2" -PassThru
-            $Proc | Wait-Process -Timeout 60 -ErrorAction SilentlyContinue #-errorvariable $TimedOut
+            $Proc | Wait-Process -Timeout 90 -ErrorAction SilentlyContinue -errorvariable $TimedOut
             $Proc | Kill
-            Write-Host "Now will reboot to complete Edition Change"
-            #Shutdown /r /f /t 0
-            Pause
-            <#
+            
             if ($TimedOut){
-                $Proc | Kill 
-                Write-Host "Edition upgrade Timed Out ... Rebooting"
+                Write-Host "Edition upgrade Timed Out ... Reboot and try again?"
                 Pause
                 Shutdown /r /t 0
 			}else{Write-Host "Finished without Timeout ... Reboot"; Pause; Shutdown /r /t 0}
 
-            #>
-
-            #changepk.exe /ProductKey NW6C2-QMPVW-D7KKK-3GKT6-VCFB2
-            <#
-            if (-not($Edition.Edition -eq "Core" -OR $Edition.Edition -eq "Home")){
-                Write-Host "Ignore error associated with Edition Upgrade."
-                Write-Host "Successfully upgraded to Windows Education Edition."
-            }else{
-                Write-Warning "Upgrade Winodws Edition from Home/Core has failed"
-                $confirmation = Read-Host "Do you want to Generalize, Reboot, and try again? (Y/N) Default:Yes"
-                if ($confirmation -eq 'n') {exit}else{"$env:systemroot\system32\sysprep\sysprep.exe /generalize /oobe /reboot"}
-            }
-            #>
         }else{Write-Host "Windows Edition: $($Edition.Edition) ... This Edition is supported by Windows AutoPilot"}
     }        
 }
@@ -80,7 +63,7 @@ Function Test-AutopilotForExistingDevice {
         $DeviceResult = Get-AutopilotDevice -serial ($DeviceToCheck).SerialNumber
         if($DeviceResult -eq $null){
             Write-Host "This device is not currently registered in AutoPilot."
-        }else {$DeviceResult; Write-Warning "STOP - This device is already registered in AutoPilot, Exiting Now"; pause; exit}
+        }else {$DeviceResult; Write-Warning "STOP - This device is already registered in AutoPilot, you do not need to use this script.  Exiting..."; pause; exit}
     }        
 }
 
@@ -99,10 +82,12 @@ Function Test-CheckForUnattendXML {
                 #$Sysprep = $true
             }else{Write-Host "Unattend file at $i not found"}
         }
-        Write-Host "Pause at the end of CheckForUnattendXML"
-        Pause 
-        
-        #if ($Sysprep){Start-Process "$env:systemroot\system32\Shutdown.exe" -ArgumentList "/r /f /t 0"<#Start-Process "$env:systemroot\system32\sysprep\sysprep.exe" -ArgumentList "/generalize /oobe /reboot" -wait#>}
+        <#
+        if ($Sysprep){
+            Start-Process "$env:systemroot\system32\Shutdown.exe" -ArgumentList "/r /f /t 0"
+            <#Start-Process "$env:systemroot\system32\sysprep\sysprep.exe" -ArgumentList "/generalize /oobe /reboot" -wait#>
+        }
+        #>
     }        
 }
 

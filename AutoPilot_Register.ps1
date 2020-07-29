@@ -14,11 +14,6 @@ $Serial = Get-DeviceSerial                                  #Creates CimSession 
 Connect-Tennant                                             #Connects to Azure and MS-Graph - Imports Dependency Modules if Necessary
 Test-AutopilotForExistingDevice -DeviceToCheck $Serial      #Check for Device Existence in Autopilot to Avoid Bug Behavior
 
-
-if ((Read-Host "Do you want to remove any unattend files from this device? These answer files can sometimes cause issues. (Y/N) Default=N") -eq "Y"){
-    Test-CheckForUnattendXML                                #Will check for and Remove any answerfiles in the Sysprep or Panther folders.
-}
-
 #Out-Grid for User to Select Azure Group to Add This Device Too
 $Group = Get-AzureADGroup -SearchString "ENDPOINT Devices" | Out-GridView -OutputMode Single
 $confirmation = Read-Host "The device info will be uploaded, registered with Windows AutoPilot, and enrolled in AAD/MDM.  Continue? (Y/N) Default: Y"
