@@ -13,7 +13,8 @@ Function Test-WindowsEditionforAutopilot {
             $Proc | Wait-Process -Timeout 60 -ErrorAction SilentlyContinue #-errorvariable $TimedOut
             $Proc | Kill
             Write-Host "Now will reboot to complete Edition Change"
-            Shutdown /r /f /t 0
+            #Shutdown /r /f /t 0
+            Pause
             <#
             if ($TimedOut){
                 $Proc | Kill 
@@ -85,7 +86,6 @@ Function Test-AutopilotForExistingDevice {
 
 Function Test-CheckForUnattendXML {
     [cmdletbinding()]
-
     Param (
     )
     
@@ -99,6 +99,9 @@ Function Test-CheckForUnattendXML {
                 #$Sysprep = $true
             }else{Write-Host "Unattend file at $i not found"}
         }
+        Write-Host "Pause at the end of CheckForUnattendXML"
+        Pause 
+        
         #if ($Sysprep){Start-Process "$env:systemroot\system32\Shutdown.exe" -ArgumentList "/r /f /t 0"<#Start-Process "$env:systemroot\system32\sysprep\sysprep.exe" -ArgumentList "/generalize /oobe /reboot" -wait#>}
     }        
 }
