@@ -1,5 +1,5 @@
 #Sourcing functions from Functions-AutopilotValidation.ps1
-iex(iwr https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/Check_Unattend/Functions-AutopilotValidation.ps1 -UseBasicParsing)
+iex(iwr https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/master/Functions-AutopilotValidation.ps1 -UseBasicParsing)
 
 #$AADCredentials = Get-Credential
 
