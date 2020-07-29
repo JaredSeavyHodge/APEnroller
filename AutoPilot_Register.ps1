@@ -1,6 +1,8 @@
 #Sourcing functions from Functions-AutopilotValidation.ps1
 iex(iwr https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/Check_Unattend/Functions-AutopilotValidation.ps1 -UseBasicParsing)
 
+#$AADCredentials = Get-Credential
+
 $confirmation = Read-Host "Do you want to check for and delete any Answer Files found on this device.  If found the device will reboot and you will need to run this script again.  This may be required on Dell Home Edition Images. (Y/N) Default: N"
 if ($confirmation -eq 'y') {
     Test-CheckForUnattendXML                                    #Will Remove any answerfiles in the Sysprep and/or Panther folder
