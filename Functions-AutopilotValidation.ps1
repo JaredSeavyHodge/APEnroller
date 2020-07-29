@@ -7,17 +7,18 @@ Function Test-WindowsEditionforAutopilot {
     Process {
         $Edition = Get-WindowsEdition -online
         if ($Edition.Edition -eq "Core" -OR $Edition.Edition -eq "Home"){
-            Write-Warning "The Windows edition must be upgraded to support AutoPilot ... Upgrading Windows Edition"
-            changepk.exe /ProductKey NW6C2-QMPVW-D7KKK-3GKT6-VCFB2
+            Write-Warning "The Windows edition must be upgraded to support AutoPilot. After the upgrade, the computer will reboot and you must run this script again."
 
-            if (-not($Edition.Edition -eq "Core" -OR $Edition.Edition -eq "Home")){
-                Write-Host "Ignore error associated with Edition Upgrade."
-                Write-Host "Successfully upgraded to Windows Education Edition."
-            }else{
-                Write-Warning "Upgrade Winodws Edition from Home/Core has failed"
-                $confirmation = Read-Host "Do you want to Generalize, Reboot, and try again? (Y/N) Default:Yes"
-                if ($confirmation -eq 'n') {exit}else{"$env:systemroot\system32\sysprep\sysprep.exe /generalize /oobe /reboot"}
-            }
+            $Proc = Start-Process changepk.exe -ArgumentList "/ProductKey NW6C2-QMPVW-D7KKK-3GKT6-VCFB2" -PassThru
+            $Proc | Wait-Process -Timeout 90 -ErrorAction SilentlyContinue -errorvariable $TimedOut
+            $Proc | Kill
+            
+            if ($TimedOut){
+                Write-Host "Edition upgrade Timed Out ... Reboot and try again?"
+                Pause
+                Shutdown /r /t 0
+			}else{Write-Host "Finished without Timeout ... Reboot"; Pause; Shutdown /r /t 0}
+
         }else{Write-Host "Windows Edition: $($Edition.Edition) ... This Edition is supported by Windows AutoPilot"}
     }        
 }
@@ -62,8 +63,30 @@ Function Test-AutopilotForExistingDevice {
         $DeviceResult = Get-AutopilotDevice -serial ($DeviceToCheck).SerialNumber
         if($DeviceResult -eq $null){
             Write-Host "This device is not currently registered in AutoPilot."
-        }else {$DeviceResult; Write-Warning "STOP - This device is already registered in AutoPilot, Exiting Now"; pause; exit}
+        }else {$DeviceResult; Write-Warning "STOP - This device is already registered in AutoPilot, you do not need to use this script.  Exiting..."; pause; exit}
     }        
 }
 
-
+Function Test-CheckForUnattendXML {
+    [cmdletbinding()]
+    Param (
+    )
+    
+    Process {
+        $Unattend = "c:\windows\system32\sysprep\unattend.xml","c:\windows\panther\unattend.xml"
+        $Sysprep = $false
+        foreach ($i in $Unattend){
+            if (Test-Path $i -PathType leaf){
+                Write-Host "Deleting file $i"
+                Remove-Item $i
+                #$Sysprep = $true
+            }else{Write-Host "Unattend file at $i not found"}
+        }
+        <#
+        if ($Sysprep){
+            Start-Process "$env:systemroot\system32\Shutdown.exe" -ArgumentList "/r /f /t 0"
+            <#Start-Process "$env:systemroot\system32\sysprep\sysprep.exe" -ArgumentList "/generalize /oobe /reboot" -wait#>
+        }
+        #>
+    }        
+}
