@@ -39,9 +39,9 @@ Function Connect-Tennant {
     }
 }
 
-Function Get-DeviceSerial {
+<# Function Get-DeviceSerial {
     [cmdletbinding()]
-    [OutputType([psobject])]
+    [OutputType([psobject]), ParameterSetName=]
     Param (
     )
     # End of Parameters
@@ -49,23 +49,27 @@ Function Get-DeviceSerial {
         $Serial = (Get-CimInstance -CimSession $(New-CimSession) -Class Win32_BIOS).SerialNumber
         $Serial
     }
-}
+} #>
 
-Function Test-AutopilotForExistingDevice {
+<# Function Test-AutopilotForExistingDevice {
     [cmdletbinding()]
     [OutputType([psobject])]
 
     Param (
-        [String]$DeviceToCheck
+        [String]$SerialToCheck
     )
     
     Process {
-        $DeviceResult = Get-AutopilotDevice -serial $DeviceToCheck
+        
+
+        
+        $DeviceResult = Get-AutopilotDevice -serial $SerialToCheck
         if($DeviceResult -eq $null){
             Write-Host "This device is not currently registered in AutoPilot."
-        }else {$DeviceResult; Write-Warning "STOP - This device is already registered in AutoPilot, you do not need to use this script.  Exiting..."; pause; exit}
+        }else {$DeviceResult; Write-Warning "STOP - This device is already registered in AutoPilot, you do not need to use this script.  Exiting..."; Stop-Transcript; pause; exit}
+    
     }        
-}
+} #>
 
 Function Test-CheckForUnattendXML {
     [cmdletbinding()]
