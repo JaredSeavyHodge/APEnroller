@@ -56,11 +56,11 @@ Function Test-AutopilotForExistingDevice {
     [OutputType([psobject])]
 
     Param (
-        [psobject]$DeviceToCheck
+        [String]$DeviceToCheck
     )
     
     Process {
-        $DeviceResult = Get-AutopilotDevice -serial ($DeviceToCheck).SerialNumber
+        $DeviceResult = Get-AutopilotDevice -serial $DeviceToCheck
         if($DeviceResult -eq $null){
             Write-Host "This device is not currently registered in AutoPilot."
         }else {$DeviceResult; Write-Warning "STOP - This device is already registered in AutoPilot, you do not need to use this script.  Exiting..."; pause; exit}
