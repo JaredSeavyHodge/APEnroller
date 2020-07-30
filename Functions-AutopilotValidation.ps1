@@ -11,7 +11,7 @@ Function Test-WindowsEditionforAutopilot {
 
             $Proc = Start-Process changepk.exe -ArgumentList "/ProductKey NW6C2-QMPVW-D7KKK-3GKT6-VCFB2" -PassThru
             $Proc | Wait-Process -Timeout 90 -ErrorAction SilentlyContinue -errorvariable $TimedOut
-            $Proc | Kill
+            $Proc | Stop-Process
             
             if ($TimedOut){
                 Write-Host "Edition upgrade Timed Out ... Reboot and try again?"
@@ -78,7 +78,7 @@ Function Test-CheckForUnattendXML {
     
     Process {
         $Unattend = "c:\windows\system32\sysprep\unattend.xml","c:\windows\panther\unattend.xml"
-        $Sysprep = $false
+        #$Sysprep = $false
         foreach ($i in $Unattend){
             if (Test-Path $i -PathType leaf){
                 Write-Host "Deleting file $i"

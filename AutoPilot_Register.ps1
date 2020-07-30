@@ -15,7 +15,7 @@ Connect-Tennant                                             #Connects to Azure a
 
 #Check for the device in Autopilot before attempting to add it as a new device.
 $Result = Get-AutopilotDevice -serial ((Get-CimInstance -CimSession $(New-CimSession) -Class Win32_BIOS).SerialNumber)
-if($Result){
+if(-not $Result){
     Write-Host "This device is not currently registered in AutoPilot. Continue to register this device."
     Pause
 }else {$DeviceResult; Write-Warning "STOP - This device is already registered in AutoPilot, you do not need to use this script.  Exiting..."; Stop-Transcript; pause; exit}
