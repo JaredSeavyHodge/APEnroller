@@ -1,7 +1,7 @@
 Start-Transcript -Path $env:TEMP\APEnroller.txt
 
 #Sourcing functions from Functions-AutopilotValidation.ps1
-Invoke-Expression(Invoke-WebRequest https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/master/Functions-AutopilotValidation.ps1 -UseBasicParsing)
+Invoke-Expression(Invoke-WebRequest https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/AddUserDrivenDeployment/Functions-AutopilotValidation.ps1 -UseBasicParsing)
 
 Test-WindowsEditionforAutopilot                             #Will Upgrade Home/Core Edition to Education to support Autopilot
 Connect-Tennant                                             #Connects to Azure and MS-Graph - Imports Dependency Modules if Necessary
