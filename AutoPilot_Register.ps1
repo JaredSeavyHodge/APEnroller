@@ -38,7 +38,8 @@ if ($confirmation -eq 'n') {
 #https://www.powershellgallery.com/packages/Get-WindowsAutoPilotInfo
 #Author of Get-WindowsAutoPilotInfo:  Michael Niehaus
 Install-Script -Name Get-WindowsAutoPilotInfo -Force
-Get-WindowsAutoPilotInfo.ps1 -Online -Assign -AddToGroup ($Group.DisplayName) -reboot
-Write-Host "Rebooting?"
-Pause
+Get-WindowsAutoPilotInfo.ps1 -Online -Assign -AddToGroup ($Group.DisplayName)
 Stop-Transcript
+Read-Host "Finished, press Enter to reboot"
+Pause
+shutdown /r /t 0
