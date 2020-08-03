@@ -3,12 +3,12 @@ Start-Transcript -Path $env:TEMP\APEnroller.txt
 #Sourcing functions from Functions-AutopilotValidation.ps1
 Invoke-Expression(Invoke-WebRequest https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/master/Functions-AutopilotValidation.ps1 -UseBasicParsing)
 
-#Gives the option to delete any answer files found
+<#Gives the option to delete any answer files found
 $confirmation = Read-Host "Do you want to check for and delete any Answer Files found on this device.  If found the device will reboot and you will need to run this script again.  This may be required on Dell Home Edition Images. (Y/N) Default: N"
 if ($confirmation -eq 'y') {
     Test-CheckForUnattendXML                                #Will Remove any answerfiles in the Sysprep and/or Panther folder
 }
-
+#>
 Test-WindowsEditionforAutopilot                             #Will Upgrade Home/Core Edition to Education to support Autopilot
 Connect-Tennant                                             #Connects to Azure and MS-Graph - Imports Dependency Modules if Necessary
 
@@ -26,12 +26,13 @@ if(-not $Result){
 $Group = Get-AzureADGroup -SearchString "ENDPOINT Devices" | Out-GridView -OutputMode Single
 
 
-#Confirm to continue
+<#Confirm to continue
 $confirmation = Read-Host "The device info will be uploaded, registered with Windows AutoPilot, and enrolled in AAD/MDM.  Continue? (Y/N) Default: Y"
 if ($confirmation -eq 'n') {
     Stop-Transcript
     exit
 }
+#>
 
 #Now that validations have completed, Micahel's script will be used to enroll the
 #device into Windows Autopilot, Azure AD, and Intune MDM
@@ -40,6 +41,6 @@ if ($confirmation -eq 'n') {
 Install-Script -Name Get-WindowsAutoPilotInfo -Force
 Get-WindowsAutoPilotInfo.ps1 -Online -Assign -AddToGroup ($Group.DisplayName)
 Stop-Transcript
-Read-Host "Finished, press Enter to reboot"
+Write-Warning "Finished, press Enter to reboot"
 Pause
 shutdown /r /t 0
