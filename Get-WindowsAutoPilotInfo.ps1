@@ -335,7 +335,7 @@ End
             $processingCount = 0
             $imported | % {
                 $device = Get-AutopilotImportedDevice -id $_.id
-                if ($device.state.deviceImportStatus -eq "unknown") {
+                if ($device.state.deviceImportStatus -eq "unknown" -And $device.state.deviceRegistrationId -eq '') {
                     $processingCount = $processingCount + 1
                 }
                 $current += $device
@@ -359,6 +359,7 @@ End
             $processingCount = 0
             $current | % {
                 $device = Get-AutopilotDevice -id $_.state.deviceRegistrationId
+                if($device.count -gt 1){Write-Error "ERROR: Attempting to sync more than one device.";pause;exit }
                 if (-not $device) {
                     $processingCount = $processingCount + 1
                 }
