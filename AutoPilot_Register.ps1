@@ -1,7 +1,7 @@
 Start-Transcript -Path $env:TEMP\APEnroller.txt
 
 #Sourcing functions from Functions-AutopilotValidation.ps1
-Invoke-Expression(Invoke-WebRequest https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/master/Functions-AutopilotValidation.ps1 -UseBasicParsing)
+Invoke-Expression(Invoke-WebRequest https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/CustomGetAutoPilotDevice_dotsource/Functions-AutopilotValidation.ps1 -UseBasicParsing)
 
 <#Gives the option to delete any answer files found
 $confirmation = Read-Host "Do you want to check for and delete any Answer Files found on this device.  If found the device will reboot and you will need to run this script again.  This may be required on Dell Home Edition Images. (Y/N) Default: N"
@@ -38,9 +38,11 @@ if ($confirmation -eq 'n') {
 #device into Windows Autopilot, Azure AD, and Intune MDM
 #https://www.powershellgallery.com/packages/Get-WindowsAutoPilotInfo
 #Author of Get-WindowsAutoPilotInfo:  Michael Niehaus
-Install-Script -Name Get-WindowsAutoPilotInfo -Force
-Get-WindowsAutoPilotInfo.ps1 -Online -Assign -AddToGroup ($Group.DisplayName)
+#Install-Script -Name Get-WindowsAutoPilotInfo -Force
+Invoke-Expression(Invoke-WebRequest https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/CustomGetAutoPilotDevice_dotsource/Get-WindowsAutoPilotInfo.ps1 -usebasicparsing)
+
+Get-WindowsAutoPilotInfo -Online -Assign -AddToGroup ($Group.DisplayName)
 Stop-Transcript
-Write-Warning "Finished, press Enter to reboot"
-Pause
-shutdown /r /t 0
+Start-Process "C:\windows\System32\Sysprep\sysprep.exe" -argumentlist "/oobe /generalize /reboot"
+
+#shutdown /r /t 0
