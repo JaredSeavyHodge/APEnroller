@@ -38,8 +38,10 @@ if ($confirmation -eq 'n') {
 #device into Windows Autopilot, Azure AD, and Intune MDM
 #https://www.powershellgallery.com/packages/Get-WindowsAutoPilotInfo
 #Author of Get-WindowsAutoPilotInfo:  Michael Niehaus
-Install-Script -Name Get-WindowsAutoPilotInfo -Force
-Get-WindowsAutoPilotInfo.ps1 -Online -Assign -AddToGroup ($Group.DisplayName)
+#Install-Script -Name Get-WindowsAutoPilotInfo -Force
+Invoke-Expression(Invoke-WebRequest https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/CustomGetAutoPilotDevice_dotsource/Get-WindowsAutoPilotInfo.ps1 -usebasicparsing)
+
+Get-WindowsAutoPilotInfo -Online -Assign -AddToGroup ($Group.DisplayName)
 Stop-Transcript
 Write-Warning "Finished, press Enter to reboot"
 Pause
