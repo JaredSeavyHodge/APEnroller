@@ -39,7 +39,7 @@ if ($confirmation -eq 'n') {
 #https://www.powershellgallery.com/packages/Get-WindowsAutoPilotInfo
 #Author of Get-WindowsAutoPilotInfo:  Michael Niehaus
 #Install-Script -Name Get-WindowsAutoPilotInfo -Force
-Invoke-Expression(Invoke-WebRequest https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/CustomGetAutoPilotDevice_dotsource/Get-WindowsAutoPilotInfo.ps1 -usebasicparsing)
+Invoke-Expression(Invoke-WebRequest https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/master/Get-WindowsAutoPilotInfo.ps1 -usebasicparsing)
 
 Get-WindowsAutoPilotInfo -Online -Assign -AddToGroup ($Group.DisplayName)
 Stop-Transcript
