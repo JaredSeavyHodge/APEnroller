@@ -105,7 +105,7 @@ Get-CMCollectionMember -CollectionName "All Systems" | .\GetWindowsAutoPilotInfo
 .\GetWindowsAutoPilotInfo.ps1 -Online
  
 #>
-
+Function Get-WindowsAutoPilotInfo{
 [CmdletBinding(DefaultParameterSetName = 'Default')]
 param(
     [Parameter(Mandatory=$False,ValueFromPipeline=$True,ValueFromPipelineByPropertyName=$True,Position=0)][alias("DNSHostName","ComputerName","Computer")] [String[]] $Name = @("localhost"),
