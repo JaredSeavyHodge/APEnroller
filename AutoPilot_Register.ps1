@@ -43,6 +43,6 @@ Invoke-Expression(Invoke-WebRequest https://raw.githubusercontent.com/JaredSeavy
 
 Get-WindowsAutoPilotInfo -Online -Assign -AddToGroup ($Group.DisplayName)
 Stop-Transcript
-Start-Process "C:\windows\System32\Sysprep\sysprep.exe" -argumentlist "/oobe /generalize /reboot"
+#Start-Process "C:\windows\System32\Sysprep\sysprep.exe" -argumentlist "/oobe /generalize /reboot"
 
-#shutdown /r /t 0
+shutdown /r /t 0
