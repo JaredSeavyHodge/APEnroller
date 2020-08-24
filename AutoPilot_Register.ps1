@@ -21,28 +21,16 @@ if(-not $Result){
     Pause
 }else {$DeviceResult; Write-Warning "STOP - This device is already registered in AutoPilot, you do not need to use this script.  Exiting..."; Stop-Transcript; pause; exit}
 
-
-#Select Azure Group to Add This Device Too
-$Group = Get-AzureADGroup -SearchString "ENDPOINT Devices" | Out-GridView -OutputMode Single
-
-
-<#Confirm to continue
-$confirmation = Read-Host "The device info will be uploaded, registered with Windows AutoPilot, and enrolled in AAD/MDM.  Continue? (Y/N) Default: Y"
-if ($confirmation -eq 'n') {
+$Shared = Read-Host "Will this be a shared, multi-user device? (Y/N) Default: Y"
+if ($Shared -eq 'n'){   
+    Get-WindowsAutoPilotInfo.ps1 -Online -Assign
     Stop-Transcript
-    exit
+    Start-Process "C:\windows\System32\Sysprep\sysprep.exe" -argumentlist "/oobe /reboot"
+}else {
+    #Select Azure Group to Add This Device Too
+    $Group = Get-AzureADGroup -SearchString "ENDPOINT Devices" | Out-GridView -OutputMode Single
+    Invoke-Expression(Invoke-WebRequest https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/UserDriven/Get-WindowsAutoPilotInfo.ps1 -usebasicparsing)
+    Get-WindowsAutoPilotInfo -Online -Assign -AddToGroup ($Group.DisplayName)
+    Stop-Transcript
+    Start-Process "C:\windows\System32\Sysprep\sysprep.exe" -argumentlist "/oobe /reboot"
 }
-#>
-
-#Now that validations have completed, Micahel's script will be used to enroll the
-#device into Windows Autopilot, Azure AD, and Intune MDM
-#https://www.powershellgallery.com/packages/Get-WindowsAutoPilotInfo
-#Author of Get-WindowsAutoPilotInfo:  Michael Niehaus
-#Install-Script -Name Get-WindowsAutoPilotInfo -Force
-Invoke-Expression(Invoke-WebRequest https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/master/Get-WindowsAutoPilotInfo.ps1 -usebasicparsing)
-
-Get-WindowsAutoPilotInfo -Online -Assign -AddToGroup ($Group.DisplayName)
-Stop-Transcript
-Start-Process "C:\windows\System32\Sysprep\sysprep.exe" -argumentlist "/oobe /reboot"
-
-#shutdown /r /t 0
