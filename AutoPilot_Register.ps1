@@ -25,12 +25,14 @@ $Shared = Read-Host "Will this be a shared, multi-user device? (Y/N) Default: Y"
 if ($Shared -eq 'n'){   
     Get-WindowsAutoPilotInfo.ps1 -Online -Assign
     Stop-Transcript
-    Start-Process "C:\windows\System32\Sysprep\sysprep.exe" -argumentlist "/oobe /reboot"
+    #Start-Process "C:\windows\System32\Sysprep\sysprep.exe" -argumentlist "/oobe /reboot"
+    shutdown /r /t 0
 }else {
     #Select Azure Group to Add This Device Too
     $Group = Get-AzureADGroup -SearchString "ENDPOINT Devices" | Out-GridView -OutputMode Single
     Invoke-Expression(Invoke-WebRequest https://raw.githubusercontent.com/JaredSeavyHodge/APEnroller/UserDriven/Get-WindowsAutoPilotInfo.ps1 -usebasicparsing)
     Get-WindowsAutoPilotInfo -Online -Assign -AddToGroup ($Group.DisplayName)
     Stop-Transcript
-    Start-Process "C:\windows\System32\Sysprep\sysprep.exe" -argumentlist "/oobe /reboot"
+    shutdown /r /t 0
+    #Start-Process "C:\windows\System32\Sysprep\sysprep.exe" -argumentlist "/oobe /reboot"
 }
