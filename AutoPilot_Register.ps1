@@ -23,7 +23,7 @@ if(-not $Result){
 
 
 #Select Azure Group to Add This Device Too
-$Group = Get-AzureADGroup -SearchString "ENDPOINT Devices" -All | Out-GridView -OutputMode Single
+$Group = Get-AzureADGroup -SearchString "ENDPOINT Devices" | Out-GridView -OutputMode Single
 
 
 <#Confirm to continue
