@@ -14,7 +14,7 @@ if(-not $Result){
 }else {$DeviceResult; Write-Warning "STOP - This device is already registered in AutoPilot, you do not need to use this script.  Exiting..."; Stop-Transcript; pause; exit}
 
 #Select Azure Group to Add This Device Too
-$Group = Get-AzureADGroup -SearchString "ENDPOINT Devices" | Out-GridView -OutputMode Single
+$Group = Get-AzureADGroup -SearchString "ENDPOINT Devices" -All $true | Out-GridView -OutputMode Single
 
 #Now that validations have completed, Micahel's script will be used to enroll the
 #device into Windows Autopilot, Azure AD, and Intune MDM
